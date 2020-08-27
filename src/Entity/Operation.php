@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\OperationRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -21,6 +22,7 @@ class Operation
 
     /**
      * @ORM\Column(type="string", length=7)
+     * @Groups({"read:comptes"})
      */
     private $libelle;
 

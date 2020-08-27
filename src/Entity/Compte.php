@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CompteRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -9,7 +12,12 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *      normalizationContext={"groups"={"read:comptes"}},
+ *      collectionOperations={"get"},
+ *      itemOperations={"get"}
+ *)
+ * @ApiFilter(SearchFilter::class, properties={"numero": "exact"})
  * @ORM\Entity(repositoryClass=CompteRepository::class)
  */
 class Compte
@@ -18,11 +26,13 @@ class Compte
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"read:comptes"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=20)
+     * @Groups({"read:comptes"})
      */
     private $numero;
 
@@ -33,11 +43,13 @@ class Compte
 
     /**
      * @ORM\Column(type="float")
+     * @Groups({"read:comptes"})
      */
     private $solde;
 
     /**
      * @ORM\Column(type="date")
+     * @Groups({"read:comptes"})
      */
     private $dateOuverture;
 
@@ -93,21 +105,25 @@ class Compte
 
     /**
      * @ORM\Column(type="string", length=10)
+     * @Groups({"read:comptes"})
      */
     private $typeCompte;
 
     /**
      * @ORM\ManyToOne(targetEntity=Entreprise::class, inversedBy="comptes")
+     * @Groups({"read:comptes"})
      */
     private $compteEntreprise;
 
     /**
      * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="comptes")
+     * @Groups({"read:comptes"})
      */
     private $compteClient;
 
     /**
      * @ORM\OneToMany(targetEntity=Operation::class, mappedBy="operationCompte")
+     * @Groups({"read:comptes"})
      */
     private $operations;
 
